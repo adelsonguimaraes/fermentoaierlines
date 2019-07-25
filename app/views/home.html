@@ -3,26 +3,26 @@
     <form action="">
         <div class="row">
             <div class="col-md-12">
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <label>Origem</label>
                     <select class="form-control" name="" id="" ng-options="obj.id as obj.nome + ' - ' + obj.brev for obj in destinos" ng-model="obj.origem">
-                        <option value="">Selecione a origem</option>
+                        <option value="0">Selecione a origem</option>
                     </select>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <label>Destino</label>
                     <select class="form-control" name="" id="" ng-options="obj.id as obj.nome + ' - ' + obj.brev for obj in destinos" ng-model="obj.destino">
-                        <option value="">Selecione o destino</option>
+                        <option value="0">Selecione o destino</option>
                     </select>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <label>Modalidade</label>
-                    <select class="form-control" name="" id=""
-                        ng-model="obj.destino">
-                        <option value="">Selecione a modalidade</option>
-                        <option value="">Ida e Volta</option>
-                        <option value="">Só Ida</option>
+                    <select class="form-control" name="" id="" ng-options="obj.id as obj.descricao for obj in modalidades" ng-model="obj.modalidade">
                     </select>
+                </div>
+                <div class="col-sm-1">
+                    &nbsp;
+                    <button class="btn btn-default" ng-click="buscar(obj)">Buscar</button>
                 </div>
             </div>
         </div>
