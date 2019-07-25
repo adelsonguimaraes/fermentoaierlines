@@ -1,24 +1,24 @@
 <?php
-// control : usuario
+// control : destino
 
 /*
-	Projeto: INCUBUS - Controle de Consultoria.
-	Project Owner: Raquel Araújo Queiroz.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 2019-02-02T18:48:29.166Z.
-	Data Atual: 02/02/2019.
+	Projeto: Fermento Aierlines.
+	Project Owner: Fermen.to Innovation Lab.
+	Desenvolvedor: Adelson Guimaraes Monteiro.
+	Data de início: 2019-07-25T14:46:14.209Z.
+	Data Atual: 25/07/2019.
 */
 
-Class UsuarioControl {
+Class DestinoControl {
 	//atributos
 	protected $con;
 	protected $obj;
 	protected $objDAO;
 
 	//construtor
-	public function __construct(Usuario $obj=NULL) {
+	public function __construct(Destino $obj=NULL) {
 		$this->con = Conexao::getInstance()->getConexao();
-		$this->objDAO = new UsuarioDAO($this->con);
+		$this->objDAO = new DestinoDAO($this->con);
 		$this->obj = $obj;
 	}
 
@@ -32,23 +32,8 @@ Class UsuarioControl {
 	function listar () {
 		return $this->objDAO->listar();
 	}
-	function listarPorSuperior ($idusuario) {
-		return $this->objDAO->listarPorSuperior($idusuario);
-	}
 	function atualizar () {
 		return $this->objDAO->atualizar($this->obj);
-	}
-	function logar ($email, $senha) {
-		return $this->objDAO->logar($email, $senha);
-	}
-	function setAuth ($idusuario) {
-		return $this->objDAO->logar($idusuario);
-	}
-	function auth ($idusuario, $auth) {
-		return $this->objDAO->auth($idusuario, $auth);
-	}
-	function getMenu ($idusuario) {
-		return $this->objDAO->getMenu($idusuario);
 	}
 	function deletar () {
 		return $this->objDAO->deletar($this->obj);

@@ -1,15 +1,15 @@
 <?php
-// dao : taxaadministrativa
+// dao : destino
 
 /*
-	Projeto: INCUBUS - Controle de Consultoria.
-	Project Owner: Raquel Araújo Queiroz.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 2019-02-02T18:48:29.166Z.
-	Data Atual: 02/02/2019.
+	Projeto: Fermento Aierlines.
+	Project Owner: Fermen.to Innovation Lab.
+	Desenvolvedor: Adelson Guimaraes Monteiro.
+	Data de início: 2019-07-25T14:46:14.209Z.
+	Data Atual: 25/07/2019.
 */
 
-Class TaxaadministrativaDAO {
+Class DestinoDAO {
 	//atributos
 	private $con;
 	private $sql;
@@ -20,17 +20,15 @@ Class TaxaadministrativaDAO {
 	//construtor
 	public function __construct($con) {
 		$this->con = $con;
-		$this->superdao = new SuperDAO('taxaadministrativa');
+		$this->superdao = new SuperDAO('destino');
 	}
 
 	//cadastrar
-	function cadastrar (taxaadministrativa $obj) {
-		$this->sql = sprintf("INSERT INTO taxaadministrativa(idtipotaxa, codigo, taxa, procentagem)
-		VALUES(%d, %d, %f, %f)",
-			mysqli_real_escape_string($this->con, $obj->getObjtipotaxa()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getCodigo()),
-			mysqli_real_escape_string($this->con, $obj->getTaxa()),
-			mysqli_real_escape_string($this->con, $obj->getProcentagem()));
+	function cadastrar (destino $obj) {
+		$this->sql = sprintf("INSERT INTO destino(nome, brev)
+		VALUES('%s', '%s')",
+			mysqli_real_escape_string($this->con, $obj->getNome()),
+			mysqli_real_escape_string($this->con, $obj->getBrev()));
 
 		$this->superdao->resetResponse();
 
@@ -46,13 +44,10 @@ Class TaxaadministrativaDAO {
 	}
 
 	//atualizar
-	function atualizar (Taxaadministrativa $obj) {
-		$this->sql = sprintf("UPDATE taxaadministrativa SET idtipotaxa = %d, codigo = %d, taxa = %f, procentagem = %f, dataedicao = '%s' WHERE id = %d ",
-			mysqli_real_escape_string($this->con, $obj->getObjtipotaxa()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getCodigo()),
-			mysqli_real_escape_string($this->con, $obj->getTaxa()),
-			mysqli_real_escape_string($this->con, $obj->getProcentagem()),
-			mysqli_real_escape_string($this->con, date('Y-m-d H:i:s')),
+	function atualizar (Destino $obj) {
+		$this->sql = sprintf("UPDATE destino SET nome = '%s', brev = '%s' WHERE id = %d ",
+			mysqli_real_escape_string($this->con, $obj->getNome()),
+			mysqli_real_escape_string($this->con, $obj->getBrev()),
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$this->superdao->resetResponse();
 
@@ -66,8 +61,8 @@ Class TaxaadministrativaDAO {
 	}
 
 	//buscarPorId
-	function buscarPorId (Taxaadministrativa $obj) {
-		$this->sql = sprintf("SELECT * FROM taxaadministrativa WHERE id = %d",
+	function buscarPorId (Destino $obj) {
+		$this->sql = sprintf("SELECT * FROM destino WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -87,15 +82,13 @@ Class TaxaadministrativaDAO {
 
 	//listar
 	function listar () {
-		$this->sql = "SELECT ta.*, tt.descricao as 'modalidade'
-		FROM taxaadministrativa ta
-		INNER JOIN tipotaxa tt on tt.id = ta.idtipotaxa";
+		$this->sql = "SELECT * FROM destino";
 		$result = mysqli_query($this->con, $this->sql);
 
 		$this->superdao->resetResponse();
 
 		if(!$result) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Taxaadministrativa' , 'Listar' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Destino' , 'Listar' ) );
 		}else{
 			while($row = mysqli_fetch_object($result)) {
 				array_push($this->lista, $row);
@@ -108,13 +101,13 @@ Class TaxaadministrativaDAO {
 
 	//listar paginado
 	function listarPaginado($start, $limit) {
-		$this->sql = "SELECT * FROM taxaadministrativa limit " . $start . ", " . $limit;
+		$this->sql = "SELECT * FROM destino limit " . $start . ", " . $limit;
 		$result = mysqli_query ( $this->con, $this->sql );
 
 		$this->superdao->resetResponse();
 
 		if ( !$result ) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Taxaadministrativa' , 'ListarPaginado' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Destino' , 'ListarPaginado' ) );
 		}else{
 			while ( $row = mysqli_fetch_assoc ( $result ) ) {				array_push( $this->lista, $row);
 			}
@@ -126,7 +119,7 @@ Class TaxaadministrativaDAO {
 		return $this->superdao->getResponse();
 	}
 	//deletar
-	function deletar (Taxaadministrativa $obj) {
+	function deletar (Destino $obj) {
 		$this->superdao->resetResponse();
 
 		// buscando por dependentes
@@ -136,7 +129,7 @@ Class TaxaadministrativaDAO {
 			return $this->superdao->getResponse();
 		}
 
-		$this->sql = sprintf("DELETE FROM taxaadministrativa WHERE id = %d",
+		$this->sql = sprintf("DELETE FROM destino WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -153,7 +146,7 @@ Class TaxaadministrativaDAO {
 
 	//quantidade total
 	function qtdTotal() {
-		$this->sql = "SELECT count(*) as quantidade FROM taxaadministrativa";
+		$this->sql = "SELECT count(*) as quantidade FROM destino";
 		$result = mysqli_query ( $this->con, $this->sql );
 		if (! $result) {
 			die ( '[ERRO]: ' . mysqli_error ( $this->con ) );

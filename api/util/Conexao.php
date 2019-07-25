@@ -1,18 +1,16 @@
 <?php
 /*
-	Projeto: INCUBUS - Controle de Consultoria.
-	Project Owner: Raquel Araújo Queiroz.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 2019-02-02T18:48:29.166Z.
-	Data Atual: 02/02/2019.
+	Projeto: Fermento Aierlines.
+	Project Owner: Fermen.to Innovation Lab.
+	Desenvolvedor: Adelson Guimaraes Monteiro.
+	Data de início: 2019-07-25T14:46:14.209Z.
+	Data Atual: 25/07/2019.
 */
-
 Class Conexao {
 	private $con;
 
 	protected function __construct () {
-		// $this->con = mysqli_connect("mysql.adelsonguimaraes.com.br","adelsonguimarae4","1ncubu5@2019", "adelsonguimaraes4");
-		$this->con = mysqli_connect("localhost","root","", "incubus");
+		$this->con = mysqli_connect("localhost","root","", "fermentoaierlines");
 		if (mysqli_connect_error()) {
 			echo "Falha na conexão com MySQL: " . mysqli_connect_error();
 		}

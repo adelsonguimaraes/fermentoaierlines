@@ -1,11 +1,10 @@
 <?php
 /*
-	Projeto: AdminSPE.
-	Project Owner: Priscila.
-	Gerente de Projeto: Nilton Caldas Jr.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 02/05/2017.
-	Data Atual: 07/05/2017.
+	Projeto: Fermento Aierlines.
+	Project Owner: Fermen.to Innovation Lab.
+	Desenvolvedor: Adelson Guimaraes Monteiro.
+	Data de início: 2019-07-25T14:46:14.209Z.
+	Data Atual: 25/07/2019.
 */
 
 /* Trata $_POST */

@@ -1,12 +1,12 @@
 <?php
-// rest : cartacredito
+// rest : destino
 
 /*
-	Projeto: INCUBUS - Controle de Consultoria.
-	Project Owner: Raquel Araújo Queiroz.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 2019-02-02T18:48:29.166Z.
-	Data Atual: 02/02/2019.
+	Projeto: Fermento Aierlines.
+	Project Owner: Fermen.to Innovation Lab.
+	Desenvolvedor: Adelson Guimaraes Monteiro.
+	Data de início: 2019-07-25T14:46:14.209Z.
+	Data Atual: 25/07/2019.
 */
 
 //inclui autoload
@@ -23,9 +23,6 @@ switch ($_POST['metodo']) {
 	case 'listar':
 		listar();
 		break;
-	case 'filtrar':
-		filtrar();
-		break;
 	case 'atualizar':
 		atualizar();
 		break;
@@ -36,52 +33,42 @@ switch ($_POST['metodo']) {
 
 function cadastrar () {
 	$data = $_POST['data'];
-	$obj = new Cartacredito(
+	$obj = new Destino(
 		NULL,
-		new Taxaadministrativa($data['idtaxaadministrativa']),
-		$data['valor'],
-		$data['entrada'],
-		$data['parcela']
+		$data['nome'],
+		$data['brev']
 	);
-	$control = new CartacreditoControl($obj);
+	$control = new DestinoControl($obj);
 	$response = $control->cadastrar();
 	echo json_encode($response);
 }
 function buscarPorId () {
 	$data = $_POST['data'];
-	$control = new CartacreditoControl(new Cartacredito($data['id']));
+	$control = new DestinoControl(new Destino($data['id']));
 	$response = $control->buscarPorId();
 	echo json_encode($response);
 }
 function listar () {
-	$control = new CartacreditoControl(new Cartacredito);
+	$control = new DestinoControl(new Destino);
 	$response = $control->listar();
-	echo json_encode($response);
-}
-function filtrar () {
-	$data = $_POST['data'];
-	$control = new CartacreditoControl();
-	$response = $control->filtrar($data);
 	echo json_encode($response);
 }
 function atualizar () {
 	$data = $_POST['data'];
-	$obj = new Cartacredito(
+	$obj = new Destino(
 		$data['id'],
-		new Taxaadministrativa($data['idtaxaadministrativa']),
-		$data['valor'],
-		$data['entrada'],
-		$data['parcela']
+		$data['nome'],
+		$data['brev']
 	);
-	$control = new CartacreditoControl($obj);
+	$control = new DestinoControl($obj);
 	$response = $control->atualizar();
 	echo json_encode($response);
 }
 function deletar () {
 	$data = $_POST['data'];
-	$banco = new Cartacredito();
+	$banco = new Destino();
 	$banco->setId($data['id']);
-	$control = new CartacreditoControl($banco);
+	$control = new DestinoControl($banco);
 	echo json_encode($control->deletar());
 }
 

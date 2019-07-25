@@ -1,15 +1,15 @@
 <?php
-// dao : agenda
+// dao : viagem
 
 /*
-	Projeto: INCUBUS - Controle de Consultoria.
-	Project Owner: Raquel Araújo Queiroz.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 2019-02-02T18:48:29.166Z.
-	Data Atual: 02/02/2019.
+	Projeto: Fermento Aierlines.
+	Project Owner: Fermen.to Innovation Lab.
+	Desenvolvedor: Adelson Guimaraes Monteiro.
+	Data de início: 2019-07-25T14:46:14.209Z.
+	Data Atual: 25/07/2019.
 */
 
-Class AgendaDAO {
+Class ViagemDAO {
 	//atributos
 	private $con;
 	private $sql;
@@ -20,18 +20,18 @@ Class AgendaDAO {
 	//construtor
 	public function __construct($con) {
 		$this->con = $con;
-		$this->superdao = new SuperDAO('agenda');
+		$this->superdao = new SuperDAO('viagem');
 	}
 
 	//cadastrar
-	function cadastrar (agenda $obj) {
-		$this->sql = sprintf("INSERT INTO agenda(idusuario, idcliente, datahora, tipo, observacao)
+	function cadastrar (viagem $obj) {
+		$this->sql = sprintf("INSERT INTO viagem(idorigem, iddestino, modalidade, descricao, data)
 		VALUES(%d, %d, '%s', '%s', '%s')",
-			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getObjcliente()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getDatahora()),
-			mysqli_real_escape_string($this->con, $obj->getTipo()),
-			mysqli_real_escape_string($this->con, $obj->getObservacao()));
+			mysqli_real_escape_string($this->con, $obj->getObjdestino()->getId()),
+			mysqli_real_escape_string($this->con, $obj->getObjdestino()->getId()),
+			mysqli_real_escape_string($this->con, $obj->getModalidade()),
+			mysqli_real_escape_string($this->con, $obj->getDescricao()),
+			mysqli_real_escape_string($this->con, $obj->getData()));
 
 		$this->superdao->resetResponse();
 
@@ -47,14 +47,13 @@ Class AgendaDAO {
 	}
 
 	//atualizar
-	function atualizar (Agenda $obj) {
-
-		$this->sql = sprintf("UPDATE agenda SET idusuario = %d, idcliente = %d, datahora = '%s', tipo = '%s', observacao = '%s', dataedicao = '%s' WHERE id = %d ",
-			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getObjcliente()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getDatahora()),
-			mysqli_real_escape_string($this->con, $obj->getTipo()),
-			mysqli_real_escape_string($this->con, $obj->getObservacao()),
+	function atualizar (Viagem $obj) {
+		$this->sql = sprintf("UPDATE viagem SET idorigem = %d, iddestino = %d, modalidade = '%s', descricao = '%s', data = '%s', dataedicao = '%s' WHERE id = %d ",
+			mysqli_real_escape_string($this->con, $obj->getObjdestino()->getId()),
+			mysqli_real_escape_string($this->con, $obj->getObjdestino()->getId()),
+			mysqli_real_escape_string($this->con, $obj->getModalidade()),
+			mysqli_real_escape_string($this->con, $obj->getDescricao()),
+			mysqli_real_escape_string($this->con, $obj->getData()),
 			mysqli_real_escape_string($this->con, date('Y-m-d H:i:s')),
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$this->superdao->resetResponse();
@@ -68,24 +67,9 @@ Class AgendaDAO {
 		return $this->superdao->getResponse();
 	}
 
-	function desativar ($idagenda) {
-		$obj = new Agenda($idagenda);
-
-		$this->sql = "UPDATE agenda set ativo = 'NAO' where id = $idagenda";
-		$this->superdao->resetResponse();
-
-		if(!mysqli_query($this->con, $this->sql)) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), get_class( $obj ), 'desativar' ) );
-		}else{
-			$this->superdao->setSuccess( true );
-			$this->superdao->setData( true );
-		}
-		return $this->superdao->getResponse();
-	}
-
 	//buscarPorId
-	function buscarPorId (Agenda $obj) {
-		$this->sql = sprintf("SELECT * FROM agenda WHERE id = %d",
+	function buscarPorId (Viagem $obj) {
+		$this->sql = sprintf("SELECT * FROM viagem WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -104,43 +88,19 @@ Class AgendaDAO {
 	}
 
 	//listar
-	function listar ($idusuario) {
-		$this->sql = "SELECT a.*, c.nome as 'cliente'
-		from agenda a
-		inner join cliente c on c.id = a.idcliente
-		where a.ativo = 'SIM' and a.idusuario = $idusuario
-		order by a.datahora";
+	function listarPorCriterios ($origem, $destino) {
+
+		$this->sql = "SELECT v.*, o.nome AS origem, o.brev AS origembrev, d.nome AS destino, d.brev AS destinobrev
+		FROM viagem v
+		INNER JOIN destino o ON  o.id = v.idorigem
+		INNER JOIN destino d ON  d.id = v.iddestino
+		WHERE o.id = $origem AND d.id = $destino";
 		$result = mysqli_query($this->con, $this->sql);
 
 		$this->superdao->resetResponse();
 
 		if(!$result) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Agenda' , 'Listar' ) );
-		}else{
-			while($row = mysqli_fetch_object($result)) {
-				array_push($this->lista, $row);
-			}
-			$this->superdao->setSuccess( true );
-			$this->superdao->setData( $this->lista );
-		}
-		return $this->superdao->getResponse();
-	}
-
-	//listar
-	function listarOrdenadoPorData ($idusuario) {
-		$this->sql = "SELECT a.*, 
-		c.nome as 'cliente', c.celular as 'clientecelular', c.`status` as 'clientestatus', c.interesse as 'clienteinteresse', 
-		c.valor as 'clientevalor', c.entrada as 'clienteentrada', c.parcela as 'clienteparcela', c.observacao as 'clienteobservacao'
-		from agenda a
-		inner join cliente c on c.id = a.idcliente
-		where a.ativo = 'SIM' and a.idusuario = $idusuario
-		order by a.datahora";
-		$result = mysqli_query($this->con, $this->sql);
-
-		$this->superdao->resetResponse();
-
-		if(!$result) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Agenda' , 'Listar' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Viagem' , 'Listar' ) );
 		}else{
 			while($row = mysqli_fetch_object($result)) {
 				array_push($this->lista, $row);
@@ -153,13 +113,13 @@ Class AgendaDAO {
 
 	//listar paginado
 	function listarPaginado($start, $limit) {
-		$this->sql = "SELECT * FROM agenda limit " . $start . ", " . $limit;
+		$this->sql = "SELECT * FROM viagem limit " . $start . ", " . $limit;
 		$result = mysqli_query ( $this->con, $this->sql );
 
 		$this->superdao->resetResponse();
 
 		if ( !$result ) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Agenda' , 'ListarPaginado' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Viagem' , 'ListarPaginado' ) );
 		}else{
 			while ( $row = mysqli_fetch_assoc ( $result ) ) {				array_push( $this->lista, $row);
 			}
@@ -171,7 +131,7 @@ Class AgendaDAO {
 		return $this->superdao->getResponse();
 	}
 	//deletar
-	function deletar (Agenda $obj) {
+	function deletar (Viagem $obj) {
 		$this->superdao->resetResponse();
 
 		// buscando por dependentes
@@ -181,7 +141,7 @@ Class AgendaDAO {
 			return $this->superdao->getResponse();
 		}
 
-		$this->sql = sprintf("DELETE FROM agenda WHERE id = %d",
+		$this->sql = sprintf("DELETE FROM viagem WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -198,7 +158,7 @@ Class AgendaDAO {
 
 	//quantidade total
 	function qtdTotal() {
-		$this->sql = "SELECT count(*) as quantidade FROM agenda";
+		$this->sql = "SELECT count(*) as quantidade FROM viagem";
 		$result = mysqli_query ( $this->con, $this->sql );
 		if (! $result) {
 			die ( '[ERRO]: ' . mysqli_error ( $this->con ) );

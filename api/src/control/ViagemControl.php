@@ -1,24 +1,24 @@
 <?php
-// control : agenda
+// control : viagem
 
 /*
-	Projeto: INCUBUS - Controle de Consultoria.
-	Project Owner: Raquel Araújo Queiroz.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 2019-02-02T18:48:29.166Z.
-	Data Atual: 02/02/2019.
+	Projeto: Fermento Aierlines.
+	Project Owner: Fermen.to Innovation Lab.
+	Desenvolvedor: Adelson Guimaraes Monteiro.
+	Data de início: 2019-07-25T14:46:14.209Z.
+	Data Atual: 25/07/2019.
 */
 
-Class AgendaControl {
+Class ViagemControl {
 	//atributos
 	protected $con;
 	protected $obj;
 	protected $objDAO;
 
 	//construtor
-	public function __construct(Agenda $obj=NULL) {
+	public function __construct(Viagem $obj=NULL) {
 		$this->con = Conexao::getInstance()->getConexao();
-		$this->objDAO = new AgendaDAO($this->con);
+		$this->objDAO = new ViagemDAO($this->con);
 		$this->obj = $obj;
 	}
 
@@ -29,17 +29,11 @@ Class AgendaControl {
 	function buscarPorId () {
 		return $this->objDAO->buscarPorId($this->obj);
 	}
-	function listar ($idusuario) {
-		return $this->objDAO->listar($idusuario);
-	}
-	function listarOrdenadoPorData ($idusuario) {
-		return $this->objDAO->listarOrdenadoPorData($idusuario);
+	function listarPorCriterios ($origem, $destino) {
+		return $this->objDAO->listarPorCriterios($origem, $destino);
 	}
 	function atualizar () {
 		return $this->objDAO->atualizar($this->obj);
-	}
-	function desativar ($idagenda) {
-		return $this->objDAO->desativar($idagenda);
 	}
 	function deletar () {
 		return $this->objDAO->deletar($this->obj);

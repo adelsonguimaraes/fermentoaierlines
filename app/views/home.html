@@ -21,12 +21,44 @@
                     </select>
                 </div>
                 <div class="col-sm-1">
-                    &nbsp;
-                    <button class="btn btn-default" ng-click="buscar(obj)">Buscar</button>
+                    <button type="button" class="btn btn-default" ng-click="buscar(obj)">Buscar</button>
                 </div>
             </div>
         </div>
     </form>
+</section>
+<section style="padding: 25px;" ng-if="voosida.length>0">
+    <h4 class="h4">
+        VOOS DE IDA <span class="info">Voo de {{origem.nome}} ({{origem.brev}}) <i class="fa fa-plane"></i> {{destino.nome}}
+        ({{destino.brev}})</span>
+    </h4> 
+    <div style="display: grid; grid-template-columns: auto auto auto auto;">
+        <div class="cards" ng-repeat="obj in voosida">
+            <div class="descricao">Voo {{obj.destino}} ({{obj.destinobrev}})</div>
+            <div class="valor">{{obj.valor | moeda}}</div>
+            <div class="valor">Data: {{obj.data | data}}</div>
+        </div>
+    </div>
+</section>
+<section  class="error" ng-if="voosida.length==0">
+    NENHUM VOO DE IDA ENCONTRADO PARA O DESTINO.
+</section>
+<section style="padding: 25px;" ng-if="voosvolta.length>0">
+    <h4 class="h4">
+        VOOS DE VOLTA <span class="info">Voo de {{destino.nome}} ({{destino.brev}}) <i class="fa fa-plane"></i>
+            {{origem.nome}}
+            ({{origem.brev}})</span>
+    </h4>
+    <div style="display: grid; grid-template-columns: auto auto auto auto;">
+        <div class="cards" ng-repeat="obj in voos">
+            <div class="descricao">Voo {{obj.destino}} ({{obj.destinobrev}})</div>
+            <div class="valor">{{obj.valor | moeda}}</div>
+            <div class="valor">Data: {{obj.data | data}}</div>
+        </div>
+    </div>
+</section>
+<section class="error" ng-if="voosvolta.length==0">
+    NENHUM VOO DE VOLTA ENCONTRADO PARA O DESTINO.
 </section>
 <section style="background: #2d2d2d; padding: 5px;">
     <img class="img-responsive" style="margin:auto;" src="libs/img/fermento.png" alt="">
