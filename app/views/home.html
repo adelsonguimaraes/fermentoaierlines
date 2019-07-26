@@ -1,38 +1,37 @@
 <div ng-include="'app/views/common/header.html'"></div>
 <section style="padding: 10px;">
-    <form action="">
+    <form>
         <div class="row">
-            <div class="col-md-12">
-                <div class="col-sm-4">
-                    <label>Origem</label>
-                    <select class="form-control" name="" id="" ng-options="obj.id as obj.nome + ' - ' + obj.brev for obj in destinos" ng-model="obj.origem">
-                        <option value="0">Selecione a origem</option>
-                    </select>
-                </div>
-                <div class="col-sm-4">
-                    <label>Destino</label>
-                    <select class="form-control" name="" id="" ng-options="obj.id as obj.nome + ' - ' + obj.brev for obj in destinos" ng-model="obj.destino">
-                        <option value="0">Selecione o destino</option>
-                    </select>
-                </div>
-                <div class="col-sm-3">
-                    <label>Modalidade</label>
-                    <select class="form-control" name="" id="" ng-options="obj.id as obj.descricao for obj in modalidades" ng-model="obj.modalidade">
-                    </select>
-                </div>
-                <div class="col-sm-1">
-                    <button type="button" class="btn btn-default" ng-click="buscar(obj)">Buscar</button>
-                </div>
+            <div class="col-sm-4">
+                <label>Origem</label>
+                <select class="form-control" name="" id="" ng-options="obj.id as obj.nome + ' - ' + obj.brev for obj in destinos" ng-model="obj.origem">
+                    <option value="0">Selecione a origem</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label>Destino</label>
+                <select class="form-control" name="" id="" ng-options="obj.id as obj.nome + ' - ' + obj.brev for obj in destinos" ng-model="obj.destino">
+                    <option value="0">Selecione o destino</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label>Modalidade</label>
+                <select class="form-control" name="" id="" ng-options="obj.id as obj.descricao for obj in modalidades" ng-model="obj.modalidade">
+                </select>
+            </div>
+            <div class="col-sm-1">
+                <br>
+                <button type="button" class="btn btn-default" ng-click="buscar(obj)">Buscar</button>
             </div>
         </div>
     </form>
 </section>
-<section style="padding: 25px;" ng-if="voosida.length>0">
+<section class="section-cards" ng-if="voosida.length>0">
     <h4 class="h4">
         VOOS DE IDA <span class="info">Voo de {{origem.nome}} ({{origem.brev}}) <i class="fa fa-plane"></i> {{destino.nome}}
         ({{destino.brev}})</span>
     </h4> 
-    <div style="display: grid; grid-template-columns: auto auto auto auto;">
+    <div class="grade">
         <div class="cards" ng-repeat="obj in voosida">
             <div class="descricao">Voo {{obj.destino}} ({{obj.destinobrev}})</div>
             <div class="valor">{{obj.valor | moeda}}</div>
@@ -43,14 +42,14 @@
 <section  class="error" ng-if="voosida.length==0">
     NENHUM VOO DE IDA ENCONTRADO PARA O DESTINO.
 </section>
-<section style="padding: 25px;" ng-if="voosvolta.length>0">
+<section class="section-cards" ng-if="voosvolta.length>0">
     <h4 class="h4">
         VOOS DE VOLTA <span class="info">Voo de {{destino.nome}} ({{destino.brev}}) <i class="fa fa-plane"></i>
             {{origem.nome}}
             ({{origem.brev}})</span>
     </h4>
-    <div style="display: grid; grid-template-columns: auto auto auto auto;">
-        <div class="cards" ng-repeat="obj in voos">
+    <div class="grade">
+        <div class="cards" ng-repeat="obj in voosvolta">
             <div class="descricao">Voo {{obj.destino}} ({{obj.destinobrev}})</div>
             <div class="valor">{{obj.valor | moeda}}</div>
             <div class="valor">Data: {{obj.data | data}}</div>

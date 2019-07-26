@@ -51,6 +51,7 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
         //tratamentos
         if (obj.origem === 0) return SweetAlert.swal({ html: true, title: "Atenção", text: "Selecione uma origem!", type: "error" });
         if (obj.destino === 0) return SweetAlert.swal({ html: true, title: "Atenção", text: "Selecione um destino!", type: "error" });
+        if (obj.origem === obj.destino) return SweetAlert.swal({ html: true, title: "Atenção", text: "Acho melhor ir de Uber <i class='fa fa-car'></i>", type: "error" });
 
         // verificando se o filtro está preenchido
         var data = { "metodo": "listarPorCriterios", "data": obj, "class": "viagem", request: 'GET' };
