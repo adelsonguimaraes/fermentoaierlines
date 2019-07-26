@@ -1,7 +1,4 @@
-angular.module(module).controller('homeCtrl', function ($rootScope, $scope, authenticationAPI, genericAPI, $location, SweetAlert, $uibModal, $timeout) {
-    //Verifica Sessao e permissão de acesso
-    // if (!$rootScope.usuario) { $location.path("/login"); return false; }
-
+angular.module(module).controller('homeCtrl', function ($rootScope, $scope, genericAPI, $location, SweetAlert, $uibModal, $timeout) {
     $scope.title = 'Fermen.to Aierlines <i class="fa fa-plane"></i>';
 
     $scope.obj = {
@@ -48,6 +45,10 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
         $scope.origem = getDestino(obj.origem);
         $scope.destino = getDestino(obj.destino)
 
+        // limpando variáveis
+        delete ($scope.voosida);
+        delete ($scope.voosvolta);
+
         //tratamentos
         if (obj.origem === 0) return SweetAlert.swal({ html: true, title: "Atenção", text: "Selecione uma origem!", type: "error" });
         if (obj.destino === 0) return SweetAlert.swal({ html: true, title: "Atenção", text: "Selecione um destino!", type: "error" });
@@ -66,7 +67,7 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
                     if ($scope.obj.modalidade === "IDAVOLTA") {
                         $scope.voosvolta = response.data.data.voosvolta;
                     }else{
-                        delete ($scope.voosvolta)
+                        delete ($scope.voosvolta);
                     }
                     $rootScope.loadoff();
                 } else {

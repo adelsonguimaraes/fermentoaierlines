@@ -1,8 +1,6 @@
-angular.module(module).service("genericAPI", function ($http, $rootScope, authenticationAPI) {
+angular.module(module).service("genericAPI", function ($http, $rootScope) {
 
     function _generic (data, scope) {
-        // autenticando o acesso
-        // if (!authenticationAPI.auth()) return false;
         return $http({
             method: 'POST',
             url: api + "src/rest/autoload.php",

@@ -1,3 +1,9 @@
+/*
+   Criando por Adelson Guimarães Monteiro em abril de 2018
+   -------------------------------------------------------
+   Biblioteca para formatação de moeda.
+*/
+
 function formataValor ( val ) {
     
     val = this.trataValor( val ); // limita a 30 caracteres
